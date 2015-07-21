@@ -1,13 +1,4 @@
-This is a mirror of http://www.vim.org/scripts/script.php?script_id=1879
-
-Repository:
-  https://bitbucket.org/ns9tks/vim-autocomplpop/
-
-Issues:
-  http://bitbucket.org/ns9tks/vim-autocomplpop/issues/
-
-Download latest(development) version
-  https://bitbucket.org/ns9tks/vim-autocomplpop/get/tip.zip
+AutoComplPop with Omni-Completion for some more langs
 
 ==============================================================================
 INTRODUCTION                                                *acp-introduction*
