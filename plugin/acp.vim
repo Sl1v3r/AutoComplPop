@@ -27,14 +27,20 @@ endfunction
 "
 function s:makeDefaultBehavior()
   let behavs = {
-        \   '*'      : [],
-        \   'ruby'   : [],
-        \   'python' : [],
-        \   'perl'   : [],
-        \   'xml'    : [],
-        \   'html'   : [],
-        \   'xhtml'  : [],
-        \   'css'    : [],
+        \   '*'          : [],
+        \   'ruby'       : [],
+        \   'python'     : [],
+        \   'javascript' : [],
+        \   'perl'       : [],
+        \   'xml'        : [],
+        \   'php'        : [],
+        \   'html'       : [],
+        \   'jade'       : [],
+        \   'xhtml'      : [],
+        \   'css'        : [],
+        \   'scss'       : [],
+        \   'sass'       : [],
+        \   'less'       : [],
         \ }
   "---------------------------------------------------------------------------
   if !empty(g:acp_behaviorUserDefinedFunction) &&
@@ -87,6 +93,12 @@ function s:makeDefaultBehavior()
         \   'repeat'  : 0,
         \ })
   "---------------------------------------------------------------------------
+  call add(behavs.javascript, {
+        \   'command' : "\<C-x>\<C-o>",
+        \   'meets'   : 'acp#meetsForJavascriptOmni',
+        \   'repeat'  : 0,
+        \ })
+  "---------------------------------------------------------------------------
   call add(behavs.perl, {
         \   'command' : "\<C-x>\<C-o>",
         \   'meets'   : 'acp#meetsForPerlOmni',
@@ -105,15 +117,45 @@ function s:makeDefaultBehavior()
         \   'repeat'  : 1,
         \ })
   "---------------------------------------------------------------------------
+  call add(behavs.php, {
+        \   'command' : "\<C-x>\<C-o>",
+        \   'meets'   : 'acp#meetsForPhpOmni',
+        \   'repeat'  : 1,
+        \ })
+  "---------------------------------------------------------------------------
   call add(behavs.xhtml, {
         \   'command' : "\<C-x>\<C-o>",
         \   'meets'   : 'acp#meetsForHtmlOmni',
         \   'repeat'  : 1,
         \ })
   "---------------------------------------------------------------------------
+  call add(behavs.jade, {
+        \   'command' : "\<C-x>\<C-o>",
+        \   'meets'   : 'acp#meetsForJadeOmni',
+        \   'repeat'  : 1,
+        \ })
+  "---------------------------------------------------------------------------
   call add(behavs.css, {
         \   'command' : "\<C-x>\<C-o>",
         \   'meets'   : 'acp#meetsForCssOmni',
+        \   'repeat'  : 0,
+        \ })
+  "---------------------------------------------------------------------------
+  call add(behavs.sass, {
+        \   'command' : "\<C-x>\<C-o>",
+        \   'meets'   : 'acp#meetsForSassOmni',
+        \   'repeat'  : 0,
+        \ })
+  "---------------------------------------------------------------------------
+  call add(behavs.scss, {
+        \   'command' : "\<C-x>\<C-o>",
+        \   'meets'   : 'acp#meetsForScssOmni',
+        \   'repeat'  : 0,
+        \ })
+  "---------------------------------------------------------------------------
+  call add(behavs.less, {
+        \   'command' : "\<C-x>\<C-o>",
+        \   'meets'   : 'acp#meetsForLessOmni',
         \   'repeat'  : 0,
         \ })
   "---------------------------------------------------------------------------
@@ -140,9 +182,12 @@ call s:defineOption('g:acp_behaviorFileLength', 0)
 call s:defineOption('g:acp_behaviorRubyOmniMethodLength', 0)
 call s:defineOption('g:acp_behaviorRubyOmniSymbolLength', 1)
 call s:defineOption('g:acp_behaviorPythonOmniLength', 0)
+call s:defineOption('g:acp_behaviorJavascriptOmniLength', 0)
 call s:defineOption('g:acp_behaviorPerlOmniLength', -1)
 call s:defineOption('g:acp_behaviorXmlOmniLength', 0)
-call s:defineOption('g:acp_behaviorHtmlOmniLength', 0)
+call s:defineOption('g:acp_behaviorPhpOmniLength', 1)
+call s:defineOption('g:acp_behaviorHtmlOmniLength', 1)
+call s:defineOption('g:acp_behaviorJadeOmniLength', 1)
 call s:defineOption('g:acp_behaviorCssOmniPropertyLength', 1)
 call s:defineOption('g:acp_behaviorCssOmniValueLength', 0)
 call s:defineOption('g:acp_behavior', {})

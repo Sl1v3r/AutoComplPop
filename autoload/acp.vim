@@ -13,6 +13,7 @@ let g:loaded_autoload_acp = 1
 "=============================================================================
 " GLOBAL FUNCTIONS: {{{1
 
+
 "
 function acp#enable()
   call acp#disable()
@@ -127,6 +128,13 @@ function acp#meetsForPythonOmni(context)
 endfunction
 
 "
+function acp#meetsForJavascriptOmni(context)
+  return g:acp_behaviorJavascriptOmniLength >= 0 &&
+        \ a:context =~ '\([a-z0-9_$]\.\|[\(\[]\)\k\{' . g:acp_behaviorJavascriptOmniLength . ',}$'
+                       "      symb.  or  ( [
+endfunction
+
+"
 function acp#meetsForPerlOmni(context)
   return g:acp_behaviorPerlOmniLength >= 0 &&
         \ a:context =~ '\w->\k\{' . g:acp_behaviorPerlOmniLength . ',}$'
@@ -140,6 +148,13 @@ function acp#meetsForXmlOmni(context)
 endfunction
 
 "
+function acp#meetsForPhpOmni(context)
+  " XXX
+  return g:acp_behaviorPhpOmniLength >= 0 &&
+        \ a:context =~ '\([a-z0-9_$]\)*\k\{' . g:acp_behaviorPhpOmniLength . ',}$'
+endfunction
+
+"
 function acp#meetsForHtmlOmni(context)
   return g:acp_behaviorHtmlOmniLength >= 0 &&
         \ a:context =~ '\(<\|<\/\|<[^>]\+ \|<[^>]\+=\"\)\k\{' .
@@ -147,9 +162,63 @@ function acp#meetsForHtmlOmni(context)
 endfunction
 
 "
+function acp#meetsForJadeOmni(context)
+  " XXX
+  return g:acp_behaviorJadeOmniLength >= 0 &&
+        \ a:context =~ '\([a-z0-9_$]\)*\k\{' . g:acp_behaviorJadeOmniLength . ',}$'
+endfunction
+
+"
 function acp#meetsForCssOmni(context)
   if g:acp_behaviorCssOmniPropertyLength >= 0 &&
-        \ a:context =~ '\(^\s\|[;{]\)\s*\k\{' .
+        \ a:context =~ '[^ \t:]\k\{' .
+        \              g:acp_behaviorCssOmniPropertyLength . ',}$'
+    return 1
+  endif
+  if g:acp_behaviorCssOmniValueLength >= 0 &&
+        \ a:context =~ '[:@!]\s*\k\{' .
+        \              g:acp_behaviorCssOmniValueLength . ',}$'
+    return 1
+  endif
+  return 0
+endfunction
+
+"
+function acp#meetsForScssOmni(context)
+  " XXX
+  if g:acp_behaviorCssOmniPropertyLength >= 0 &&
+        \ a:context =~ '[^ \t:]\k\{' .
+        \              g:acp_behaviorCssOmniPropertyLength . ',}$'
+    return 1
+  endif
+  if g:acp_behaviorCssOmniValueLength >= 0 &&
+        \ a:context =~ '[:@!]\s*\k\{' .
+        \              g:acp_behaviorCssOmniValueLength . ',}$'
+    return 1
+  endif
+  return 0
+endfunction
+
+function acp#meetsForSassOmni(context)
+  " XXX
+  if g:acp_behaviorCssOmniPropertyLength >= 0 &&
+        \ a:context =~ '[^ \t:]\k\{' .
+        \              g:acp_behaviorCssOmniPropertyLength . ',}$'
+    return 1
+  endif
+  if g:acp_behaviorCssOmniValueLength >= 0 &&
+        \ a:context =~ '[:@!]\s*\k\{' .
+        \              g:acp_behaviorCssOmniValueLength . ',}$'
+    return 1
+  endif
+  return 0
+endfunction
+
+"
+function acp#meetsForLessOmni(context)
+  " XXX
+  if g:acp_behaviorCssOmniPropertyLength >= 0 &&
+        \ a:context =~ '[^ \t:]\k\{' .
         \              g:acp_behaviorCssOmniPropertyLength . ',}$'
     return 1
   endif
