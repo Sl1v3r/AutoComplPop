@@ -1,20 +1,19 @@
-"=============================================================================
-" Copyright (c) 2007-2009 Takeshi NISHIDA
-"
-"=============================================================================
-" LOAD GUARD {{{1
+
+
+
+" LOAD GUARD: ================================================================
+
 
 if exists('g:loaded_autoload_acp') || v:version < 702
   finish
 endif
 let g:loaded_autoload_acp = 1
 
-" }}}1
-"=============================================================================
-" GLOBAL FUNCTIONS: {{{1
 
 
-"
+" GLOBAL FUNCTIONS: ==========================================================
+
+
 function acp#enable()
   call acp#disable()
 
@@ -35,7 +34,7 @@ function acp#enable()
   nnoremap <silent> R R<C-r>=<SID>feedPopup()<CR>
 endfunction
 
-"
+
 function acp#disable()
   call s:unmapForMappingDriven()
   augroup AcpGlobalAutoCommand
@@ -46,21 +45,7 @@ function acp#disable()
   nnoremap R <Nop> | nunmap R
 endfunction
 
-"
-function acp#lock()
-  let s:lockCount += 1
-endfunction
 
-"
-function acp#unlock()
-  let s:lockCount -= 1
-  if s:lockCount < 0
-    let s:lockCount = 0
-    throw "AutoComplPop: not locked"
-  endif
-endfunction
-
-"
 function acp#meetsForSnipmate(context)
   if g:acp_behaviorSnipmateLength < 0
     return 0
@@ -70,12 +55,13 @@ function acp#meetsForSnipmate(context)
   return !empty(matches) && !empty(s:getMatchingSnipItems(matches[2]))
 endfunction
 
-"
+
 function acp#meetsForKeyword(context)
   if g:acp_behaviorKeywordLength < 0
     return 0
   endif
-  let matches = matchlist(a:context, '\(\k\{' . g:acp_behaviorKeywordLength . ',}\)$')
+  let matches = matchlist(a:context, '\(\k\{' .
+        \       g:acp_behaviorKeywordLength . ',}\)$')
   if empty(matches)
     return 0
   endif
@@ -87,7 +73,7 @@ function acp#meetsForKeyword(context)
   return 1
 endfunction
 
-"
+
 function acp#meetsForFile(context)
   if g:acp_behaviorFileLength < 0
     return 0
@@ -103,7 +89,7 @@ function acp#meetsForFile(context)
   return a:context !~ '[*/\\][/\\]\f*$\|[^[:print:]]\f*$'
 endfunction
 
-"
+
 function acp#meetsForRubyOmni(context)
   if !has('ruby')
     return 0
@@ -121,54 +107,54 @@ function acp#meetsForRubyOmni(context)
   return 0
 endfunction
 
-"
+
 function acp#meetsForPythonOmni(context)
   return has('python') && g:acp_behaviorPythonOmniLength >= 0 &&
         \ a:context =~ '\k\.\k\{' . g:acp_behaviorPythonOmniLength . ',}$'
 endfunction
 
-"
+
 function acp#meetsForJavascriptOmni(context)
   return g:acp_behaviorJavascriptOmniLength >= 0 &&
-        \ a:context =~ '\([a-z0-9_$]\.\|[\(\[]\)\k\{' . g:acp_behaviorJavascriptOmniLength . ',}$'
-                       "      symb.  or  ( [
+        \ a:context =~ '\([a-z0-9_$]\.\|[\(\[]\)\k\{' .
+        \              g:acp_behaviorJavascriptOmniLength . ',}$'
 endfunction
 
-"
+
 function acp#meetsForPerlOmni(context)
   return g:acp_behaviorPerlOmniLength >= 0 &&
         \ a:context =~ '\w->\k\{' . g:acp_behaviorPerlOmniLength . ',}$'
 endfunction
 
-"
+
 function acp#meetsForXmlOmni(context)
   return g:acp_behaviorXmlOmniLength >= 0 &&
         \ a:context =~ '\(<\|<\/\|<[^>]\+ \|<[^>]\+=\"\)\k\{' .
         \              g:acp_behaviorXmlOmniLength . ',}$'
 endfunction
 
-"
+
 function acp#meetsForPhpOmni(context)
-  " XXX
   return g:acp_behaviorPhpOmniLength >= 0 &&
-        \ a:context =~ '\([a-z0-9_$]\)*\k\{' . g:acp_behaviorPhpOmniLength . ',}$'
+        \ a:context =~ '\([a-z0-9_$]\)*\k\{' .
+        \              g:acp_behaviorPhpOmniLength . ',}$'
 endfunction
 
-"
+
 function acp#meetsForHtmlOmni(context)
   return g:acp_behaviorHtmlOmniLength >= 0 &&
         \ a:context =~ '\(<\|<\/\|<[^>]\+ \|<[^>]\+=\"\)\k\{' .
         \              g:acp_behaviorHtmlOmniLength . ',}$'
 endfunction
 
-"
+
 function acp#meetsForJadeOmni(context)
-  " XXX
   return g:acp_behaviorJadeOmniLength >= 0 &&
-        \ a:context =~ '\([a-z0-9_$]\)*\k\{' . g:acp_behaviorJadeOmniLength . ',}$'
+        \ a:context =~ '\([a-z0-9_$]\)*\k\{' .
+        \              g:acp_behaviorJadeOmniLength . ',}$'
 endfunction
 
-"
+
 function acp#meetsForCssOmni(context)
   if g:acp_behaviorCssOmniPropertyLength >= 0 &&
         \ a:context =~ '[^ \t:]\k\{' .
@@ -183,9 +169,8 @@ function acp#meetsForCssOmni(context)
   return 0
 endfunction
 
-"
+
 function acp#meetsForScssOmni(context)
-  " XXX
   if g:acp_behaviorCssOmniPropertyLength >= 0 &&
         \ a:context =~ '[^ \t:]\k\{' .
         \              g:acp_behaviorCssOmniPropertyLength . ',}$'
@@ -198,9 +183,9 @@ function acp#meetsForScssOmni(context)
   endif
   return 0
 endfunction
+
 
 function acp#meetsForSassOmni(context)
-  " XXX
   if g:acp_behaviorCssOmniPropertyLength >= 0 &&
         \ a:context =~ '[^ \t:]\k\{' .
         \              g:acp_behaviorCssOmniPropertyLength . ',}$'
@@ -214,9 +199,8 @@ function acp#meetsForSassOmni(context)
   return 0
 endfunction
 
-"
+
 function acp#meetsForLessOmni(context)
-  " XXX
   if g:acp_behaviorCssOmniPropertyLength >= 0 &&
         \ a:context =~ '[^ \t:]\k\{' .
         \              g:acp_behaviorCssOmniPropertyLength . ',}$'
@@ -230,7 +214,14 @@ function acp#meetsForLessOmni(context)
   return 0
 endfunction
 
-"
+
+function acp#meetsForHaskellOmni(context)
+  return g:acp_behaviorHaskellOmniLength >= 0 &&
+        \ a:context =~ '\([a-z0-9_$]\.\|[\(\[]\)\k\{' .
+        \              g:acp_behaviorHaskellOmniLength . ',}$'
+endfunction
+
+
 function acp#completeSnipmate(findstart, base)
   if a:findstart
     let s:posSnipmateCompletion = len(matchstr(s:getCurrentText(), '.*\U'))
@@ -242,7 +233,7 @@ function acp#completeSnipmate(findstart, base)
   return map(sort(items(items)), 's:makeSnipmateItem(v:val[0], v:val[1])')
 endfunction
 
-"
+
 function acp#onPopupCloseSnipmate()
   let word = s:getCurrentText()[s:posSnipmateCompletion :]
   for trigger in keys(GetSnipsInCurrentScope())
@@ -254,7 +245,7 @@ function acp#onPopupCloseSnipmate()
   return 1
 endfunction
 
-"
+
 function acp#onPopupPost()
   " to clear <C-r>= expression on command-line
   echo ''
@@ -280,7 +271,7 @@ function acp#onPopupPost()
   endif
 endfunction
 
-"
+
 function acp#onBs()
   " using "matchstr" and not "strpart" in order to handle multi-byte
   " characters
@@ -291,11 +282,11 @@ function acp#onBs()
   return "\<C-e>\<BS>"
 endfunction
 
-" }}}1
-"=============================================================================
-" LOCAL FUNCTIONS: {{{1
 
-"
+
+" LOCAL FUNCTIONS: ===========================================================
+
+
 function s:mapForMappingDriven()
   call s:unmapForMappingDriven()
   let s:keysMappingDriven = [
@@ -312,7 +303,7 @@ function s:mapForMappingDriven()
   endfor
 endfunction
 
-"
+
 function s:unmapForMappingDriven()
   if !exists('s:keysMappingDriven')
     return
@@ -323,13 +314,13 @@ function s:unmapForMappingDriven()
   let s:keysMappingDriven = []
 endfunction
 
-"
+
 function s:setTempOption(group, name, value)
   call extend(s:tempOptionSet[a:group], { a:name : eval('&' . a:name) }, 'keep')
   execute printf('let &%s = a:value', a:name)
 endfunction
 
-"
+
 function s:restoreTempOptions(group)
   for [name, value] in items(s:tempOptionSet[a:group])
     execute printf('let &%s = value', name)
@@ -337,22 +328,22 @@ function s:restoreTempOptions(group)
   let s:tempOptionSet[a:group] = {}
 endfunction
 
-"
+
 function s:getCurrentWord()
   return matchstr(s:getCurrentText(), '\k*$')
 endfunction
 
-"
+
 function s:getCurrentText()
   return strpart(getline('.'), 0, col('.') - 1)
 endfunction
 
-"
+
 function s:getPostText()
   return strpart(getline('.'), col('.') - 1)
 endfunction
 
-"
+
 function s:isModifiedSinceLastCall()
   if exists('s:posLast')
     let posPrev = s:posLast
@@ -377,7 +368,7 @@ function s:isModifiedSinceLastCall()
   return posPrev[2] != s:posLast[2]
 endfunction
 
-"
+
 function s:makeCurrentBehaviorSet()
   let modified = s:isModifiedSinceLastCall()
   if exists('s:behavsCurrent[s:iBehavs].repeat') && s:behavsCurrent[s:iBehavs].repeat
@@ -404,11 +395,11 @@ function s:makeCurrentBehaviorSet()
   return behavs
 endfunction
 
-"
+
 function s:feedPopup()
   " NOTE: CursorMovedI is not triggered while the popup menu is visible. And
   "       it will be triggered when popup menu is disappeared.
-  if s:lockCount > 0 || pumvisible() || &paste
+  if pumvisible() || &paste
     return ''
   endif
   if exists('s:behavsCurrent[s:iBehavs].onPopupClose')
@@ -440,7 +431,7 @@ function s:feedPopup()
   return '' " this function is called by <C-r>=
 endfunction
 
-"
+
 function s:finishPopup(fGroup1)
   inoremap <C-h> <Nop> | iunmap <C-h>
   inoremap <BS>  <Nop> | iunmap <BS>
@@ -451,14 +442,14 @@ function s:finishPopup(fGroup1)
   endif
 endfunction
 
-"
+
 function s:setCompletefunc()
   if exists('s:behavsCurrent[s:iBehavs].completefunc')
     call s:setTempOption(0, 'completefunc', s:behavsCurrent[s:iBehavs].completefunc)
   endif
 endfunction
 
-"
+
 function s:makeSnipmateItem(key, snip)
   if type(a:snip) == type([])
     let descriptions = map(copy(a:snip), 'v:val[0]')
@@ -472,7 +463,7 @@ function s:makeSnipmateItem(key, snip)
         \ }
 endfunction
 
-"
+
 function s:getMatchingSnipItems(base)
   let key = a:base . "\n"
   if !exists('s:snipItems[key]')
@@ -483,18 +474,14 @@ function s:getMatchingSnipItems(base)
   return s:snipItems[key]
 endfunction
 
-" }}}1
-"=============================================================================
-" INITIALIZATION {{{1
+
+
+" INITIALIZATION: ============================================================
+
 
 let s:GROUP0 = 0
 let s:GROUP1 = 1
-let s:lockCount = 0
 let s:behavsCurrent = []
 let s:iBehavs = 0
 let s:tempOptionSet = [{}, {}]
 let s:snipItems = {}
-
-" }}}1
-"=============================================================================
-" vim: set fdm=marker:
