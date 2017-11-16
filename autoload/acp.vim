@@ -217,8 +217,7 @@ endfunction
 
 function acp#meetsForHaskellOmni(context)
   return g:acp_behaviorHaskellOmniLength >= 0 &&
-        \ a:context =~ '\([a-z0-9_$]\.\|[\(\[]\)\k\{' .
-        \              g:acp_behaviorHaskellOmniLength . ',}$'
+        \ a:context =~ '[a-z0-9_$]\k\{1,}$'
 endfunction
 
 

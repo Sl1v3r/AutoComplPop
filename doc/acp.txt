@@ -12,7 +12,7 @@ OPTIONS                         |acp-options|
 SPECIAL THANKS                  |acp-thanks|
 CHANGELOG                       |acp-changelog|
 ABOUT                           |acp-about|
-
+ABOUT                           |acp-about|
 
 ==============================================================================
 INTRODUCTION                                                *acp-introduction*
